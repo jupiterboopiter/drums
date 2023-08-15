@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+  <script src="script.js"></script>
+</head>
+<body>
+
+  <audio id="audiosnippetId" src="./sounds/cheer.mp3"></audio>
+
+  <div class="intro">
+    <h1 class="logo-header">
+      <span class="logo">Are You Ready?</span> <span class="logo">The Crowd's Cheering For You...</span>
+    </h1>
+  </div>
+
+<div class="title">
+  <h1>Play The Drums For The Crowd!</h1>
+</div>
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+
+<script>
+
+function FadeIn() {
+
+var sound = document.getElementById('audiosnippet');
+
+var vol = $.global.volume;
+
+if ( vol < 100 )
+    {
+        sound.volume = (vol / 100);
+        $.global.volume = $.global.volume + 10;
+        setInterval(function() { FadeIn() }, 1200);
+    }
+
+  }
+
+
+let intro = document.querySelector('.intro');
+let logo = document.querySelector('.logo-header');
+let logoSpan = document.querySelectorAll('.logo');
+
+window.addEventListener('DOMContentLoaded', ()=>{
+
+  setTimeout(()=>{
+        
+    logoSpan.forEach((span, idx)=>{
+      setTimeout(()=>{
+        span.classList.add('active');
+      }, (idx + 1) * 800)
+    });
+
+    setTimeout(()=>{
+      logoSpan.forEach((span, idx)=>{
+
+        setTimeout(()=>{
+          span.classList.add('fade');
+          }, (idx + 1) * 200)
+      })
+    }, 3200);
+
+    setTimeout(()=>{
+      intro.style.top = '-100vh';
+    }, 4000)
+
+
+  })
+})
+
+  window.addEventListener('keydown', function (e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+    key.classList.add('playing');
+  });
+
+function removeTransiton(e) {
+  if (e.propertyName !== 'transform') return;
+  this.classList.remove('playing');
+}
+
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => key.addEventListener('transitionend', removeTransiton));
+
+</script>
+
+
+</body>
+</html>
